@@ -14,8 +14,14 @@ import yaml
 from yaml.loader import SafeLoader
 import os
 from dotenv import load_dotenv
+import toml
 
-load_dotenv()
+config = toml.load('config.toml')
+
+# Definir a variável de ambiente DATA_PATH
+os.environ['DATA_PATH'] = config['environment']['DATA_PATH']
+
+
 data_path = os.getenv('DATA_PATH')
 print(data_path)
 
