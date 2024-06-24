@@ -16,7 +16,7 @@ import os
 from dotenv import load_dotenv
 import toml
 
-config = toml.load('config.toml')
+config = toml.load('data/config.toml')
 
 # Definir a variável de ambiente DATA_PATH
 os.environ['DATA_PATH'] = config['environment']['DATA_PATH']
