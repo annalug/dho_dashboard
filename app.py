@@ -24,6 +24,10 @@ os.environ['DATA_PATH'] = config['environment']['DATA_PATH']
 
 data_path = os.getenv('DATA_PATH')
 
+def load_config(file_path):
+    with open(file_path, 'r') as file:
+        return file.read()
+
 config_yaml_path = os.path.join(data_path, 'config.yaml')
 config_data = load_config(config_yaml_path)
 
