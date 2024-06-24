@@ -12,8 +12,13 @@ from auxiliar import *
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
+import os
+from dotenv import load_dotenv
 
-with open('config.yaml') as file:
+load_dotenv()
+data_path = os.getenv('DATA_PATH')
+
+with open(f'{data_path}/config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
@@ -90,7 +95,7 @@ if st.session_state["authentication_status"]:
 
     st.title('EDA')
 
-    path = "data/Entrevista de Desligamento 2023_2024.xlsx"
+    path = f"{data_path}/Entrevista de Desligamento 2023_2024.xlsx"
     df = get_data(path)
     df_orig = df.copy()
 
