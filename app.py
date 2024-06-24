@@ -25,7 +25,7 @@ os.environ['DATA_PATH'] = config['environment']['DATA_PATH']
 data_path = os.getenv('DATA_PATH')
 print(data_path)
 
-with open(f'{data_path}/config.yaml') as file:
+with open(f'{data_path}/config.toml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
 authenticator = stauth.Authenticate(
