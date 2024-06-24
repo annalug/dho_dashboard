@@ -24,6 +24,8 @@ os.environ['DATA_PATH'] = config['environment']['DATA_PATH']
 
 data_path = os.getenv('DATA_PATH')
 
+config_yaml_path = os.path.join(data_path, 'config.yaml')
+config_data = load_config(config_yaml_path)
 
 authenticator = stauth.Authenticate(
     config['credentials'],

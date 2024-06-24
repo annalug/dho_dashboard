@@ -1,2 +1,15 @@
 [environment]
 DATA_PATH = "C:/Users/anna.silva/Documents/dho_dashboard/data"
+
+
+[credentials]
+usernames = ["annalug", "paulo_oliveira"]
+passwords = ["annalu301293", "paulodho123"]
+
+[cookie]
+name = "some_cookie_name"
+key = "211521515"
+expiry_days = 0
+
+[pre-authorized]
+emails = ["user1@example.com", "user2@example.com"]
