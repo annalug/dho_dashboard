@@ -13,3 +13,4 @@ vaderSentiment==3.3.2
 vaderSentiment==3.3.2
 wordcloud==1.9.3
 python-dotenv
+openpyxl
