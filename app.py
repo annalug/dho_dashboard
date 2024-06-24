@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 data_path = os.getenv('DATA_PATH')
 
+
 with open(f'{data_path}/config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
