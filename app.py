@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 from auxiliar import *
-from streamlit_authenticator.utilities.hasher import Hasher
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
