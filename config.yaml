@@ -1,5 +1,11 @@
 credentials:
   usernames:
+    mgeraldi:
+      email: jsmith@gmail.com
+      failed_login_attempts: 0 # Will be managed automatically
+      logged_in: False # Will be managed automatically
+      name: Marcelo Geraldi
+      password: mgeraldi4545 # Will be hashed automatically
     annalug:
       email: jsmith@gmail.com
       failed_login_attempts: 0 # Will be managed automatically
