@@ -10,13 +10,29 @@ import seaborn as sns
 import streamlit as st
 from auxiliar import *
 import streamlit_authenticator as stauth
-import yaml
-from yaml.loader import SafeLoader
-import os
+
+container_name = "dho-project"
+storage_account_key = read_storage_key('storage_key.txt')
+
+# Defina suas credenciais e o nome do contêiner
+storage_account_name = "hlbdatalake"
+# Conectar ao BlobServiceClient usando a connection string
+connection_string = f"DefaultEndpointsProtocol=https;AccountName={storage_account_name};AccountKey={storage_account_key};EndpointSuffix=core.windows.net"
+blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+# Criar o ContainerClient
+container_client = blob_service_client.get_container_client(container_name)
 
 
-with open('config.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
+config = read_yaml_from_blob(
+    container_name="dho-project",
+    blob_name="config.yaml"
+)
+
+if config:
+    print("Arquivo YAML lido com sucesso:")
+else:
+    print("Falha ao ler o arquivo YAML.")
+
 
 authenticator = stauth.Authenticate(
     config['credentials'],
@@ -30,9 +46,6 @@ authenticator.login()
 if st.session_state["authentication_status"]:
     authenticator.logout()
 
-
-
-    data_path = "data"
 
     @st.cache_resource
     def cluster_model():
@@ -58,7 +71,10 @@ if st.session_state["authentication_status"]:
             "Na sua opinião, quais aspectos importantes a empresa deveria desenvolver?",
             "Espaço livre para sugestões, elogios, críticas e afins"
         ]
-        df = pd.read_excel(path, names=cols)
+
+        
+        df = read_excel_from_blob(connection_string, container_name,path,cols=cols)
+        # df = pd.read_excel(path, names=cols)
         df.columns = df.columns.str.replace(' ', '_')
         df['Motivo_do_desligamento'] = df['Motivo_do_desligamento'].replace({
             'Inciativa do colaborador': 'Iniciativa do colaborador'
@@ -95,8 +111,30 @@ if st.session_state["authentication_status"]:
 
     st.title('EDA')
 
-    path = f"{data_path}/Entrevista de Desligamento 2023_2024.xlsx"
-    df = get_data(path)
+    path = "data/Entrevista de Desligamento 2023_2024.xlsx"
+    cols = [
+            "Código", "Data Admissão", "Data Saída",
+            "Empresa", "Área", "Função", "Gestor", "Tempo de empresa",
+            "Motivo do desligamento", "Selecione o principal fator que motivou o seu desligamento:",
+            "Informe o motivo mencionado no item anterior",
+            "Na sua opinião, quais aspectos importantes a empresa deveria desenvolver?",
+            "Espaço livre para sugestões, elogios, críticas e afins"
+        ]
+    df = read_excel_from_blob(connection_string, container_name, path, cols=cols)
+    df.columns = df.columns.str.replace(' ', '_')
+    df['Motivo_do_desligamento'] = df['Motivo_do_desligamento'].replace({
+        'Inciativa do colaborador': 'Iniciativa do colaborador'
+    })
+    df['Motivo_do_desligamento'] = df['Motivo_do_desligamento'].replace({
+        'Iniciativa da empresa': 'Iniciativa de empresa'
+    })
+
+    df['Info_Completa'] = df[["Selecione_o_principal_fator_que_motivou_o_seu_desligamento:",
+                              "Informe_o_motivo_mencionado_no_item_anterior",
+                              "Na_sua_opinião,_quais_aspectos_importantes_a_empresa_deveria_desenvolver?",
+                              "Espaço_livre_para_sugestões,_elogios,_críticas_e_afins"]].apply(
+        lambda row: ' '.join(row.values.astype(str)), axis=1)
+
     df_orig = df.copy()
 
     motivos_contagem = df['Motivo_do_desligamento'].value_counts()
@@ -127,8 +165,6 @@ if st.session_state["authentication_status"]:
     plt.axis('off')  # Desliga os eixos
 
     st.pyplot(plt)
-
-    st.header("______________________________________________________")
 
     st.write("Principal fator por área:")
 
