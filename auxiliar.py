@@ -82,7 +82,7 @@ def traduzir_texto(texto):
         return texto
 
 
-def read_yaml_from_blob(container_name, blob_name, key_file_path='storage_key.txt'):
+def read_yaml_from_blob(container_name, blob_name, storage_account_key):
     """
     Lê um arquivo YAML de um blob no Azure Blob Storage.
 
@@ -92,9 +92,9 @@ def read_yaml_from_blob(container_name, blob_name, key_file_path='storage_key.tx
     :return: O conteúdo do arquivo YAML como um dicionário, ou None se houver um erro.
     """
     # Ler a chave de armazenamento do arquivo de texto
-    with open(key_file_path, 'r') as file:
-        storage_account_key = file.read().strip()
-
+    # with open(key_file_path, 'r') as file:
+    #     storage_account_key = file.read().strip()
+    storage_account_key = storage_account_key
     # Defina o nome da conta de armazenamento
     storage_account_name = "hlbdatalake"
 
