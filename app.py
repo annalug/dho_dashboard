@@ -27,7 +27,8 @@ container_client = blob_service_client.get_container_client(container_name)
 
 config = read_yaml_from_blob(
     container_name="dho-project",
-    blob_name="config.yaml"
+    blob_name="config.yaml",
+    storage_account_key = storage_account_key 
 )
 
 if config:
