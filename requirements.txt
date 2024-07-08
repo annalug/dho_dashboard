@@ -1,4 +1,4 @@
-azure_storage==0.37.0
+
 googletrans==4.0.0rc1
 matplotlib==3.8.0
 nltk==3.8.1
